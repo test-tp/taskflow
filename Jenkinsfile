@@ -35,5 +35,13 @@ pipeline {
                 echo "Succès ! Le projet TaskFlow a été initialisé, installé et testé avec succès."
             }
         }
+	stage('Build Docker Image') {
+            steps {
+                // On simule le build et le tag avec un numéro de version (ex: Build numéro X de Jenkins)
+                echo "Démarrage du Build Docker pour TaskFlow..."
+                echo "Commande simulée : docker build -t taskflow:${env.BUILD_NUMBER} ."
+                echo "Image taskflow:${env.BUILD_NUMBER} générée avec succès !"
+            }
+        }
     }
 }
