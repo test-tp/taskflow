@@ -1,31 +1,30 @@
 pipeline {
     agent any
+    
+    // On dit à Jenkins d'activer Node.js pour toute la pipeline
+    tools {
+        nodejs 'node18'
+    }
 
     stages {
-        // Étape 1 : Jenkins télécharge automatiquement le code (Déjà fonctionnel !)
-        // On peut retirer l'étape manuelle "Checkout Git" car Jenkins le fait déjà par défaut au démarrage.
-
-        // Étape 2 : On installe les dépendances et on lance les tests DANS un conteneur Node
-        stage('Install & Test') {
-            agent {
-                docker { 
-                    image 'node:18-alpine' 
-                    // On partage le cache npm pour que ce soit plus rapide
-                    args '-v $HOME/.npm:/.npm'
-                }
-            }
+        stage('Install Dependencies') {
             steps {
-                // Ces commandes s'exécutent désormais dans un environnement qui connaît "npm" !
+                // Cette commande va fonctionner car Jenkins a maintenant l'outil npm !
                 sh 'npm install'
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                // Consigne du TP : Le pipeline doit échouer si les tests sont KO [cite: 95, 100]
                 sh 'npm test'
             }
         }
 
-        // Étape 3 : On build l'image Docker finale du projet TaskFlow
-        stage('Build Docker Image') {
+        stage('Build Simulation') {
             steps {
-                // Cette commande s'exécute sur l'agent principal (Jenkins) qui a accès au Docker du PC
-                sh 'docker build -t taskflow:latest .'
+                // Pour l'instant, on valide que les étapes Node fonctionnent.
+                echo "Dependencies installed and tests passed successfully!"
             }
         }
     }
