@@ -29,10 +29,14 @@ pipeline {
         }
 
         stage('Build Docker Image') {
-            steps {
-                echo "Image taskflow:${env.BUILD_NUMBER} générée."
-            }
-        }
+    	    steps {
+        	script {
+            		// Le vrai build Docker qui va s'exécuter sur ta machine
+            		sh "docker build -t taskflow:${env.BUILD_NUMBER} ."
+            	sh "docker tag taskflow:${env.BUILD_NUMBER} taskflow:latest"
+        		}
+    		}
+	}
 
         stage('Deploy (Partie 4)') {
             steps {
