@@ -1,11 +1,15 @@
 #!/bin/bash
-echo "=== DÉBUT DU DÉPLOIEMENT CONTINU ==="
-echo "Arrêt de l'ancienne version de TaskFlow si elle existe..."
-# Dans un vrai environnement, on ferait : docker stop taskflow-app || true
+echo "=== DÉBUT DU DÉPLOIEMENT CONTINU (AVEC CONFIG PARTIE 5) ==="
 
-echo "Lancement de la nouvelle image Docker..."
-# Dans un vrai environnement : docker run -d --name taskflow-app -p 3000:3000 taskflow:latest
+# On définit qu'on déploie l'environnement de TEST
+export ENV_FILE=test.env
+export PORT=3000
 
-echo "Vérification du statut du service..."
-echo "Service TaskFlow en ligne (99.9% disponibilité respecté)."
-echo "=== DÉPLOIEMENT TERMINÉ AVEC SUCCÈS ==="
+echo "Chargement de la configuration : $ENV_FILE"
+
+# Dans un vrai environnement avec Docker Compose installé, on ferait :
+# docker compose down
+# docker compose up -d
+
+echo "Application TaskFlow déployée en mode : TEST sur le port $PORT"
+echo "=== DÉPLOIEMENT TERMINÉ ==="
